@@ -1,5 +1,5 @@
-const { resolve } = require('path');
-const WebpackHtmlPlugin = require('webpack-html-plugin');
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -20,62 +20,60 @@ const getCssLoaders = (cssOptions, preProcessors) => {
   return loaders;
 };
 
-const rules = [
-  {
-    test: /\.tsx?$/,
-    exclude: /(node_modules|\.webpack)/,
-    use: [
+module.exports = {
+  mode: 'development',
+  devtool: isDev ? 'source-map' : void 0,
+  entry: './src/renderer/index.ts',
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    filename: 'renderer.js',
+  },
+  // Put your normal webpack config below here
+  module: {
+    rules: [
       {
-        loader: 'awesome-typescript-loader',
-        options: {
-          transpileOnly: true,
-        },
+        test: /\.tsx?$/,
+        exclude: /(node_modules|\.webpack)/,
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: getCssLoaders({
+          sourceMap: isDev,
+        }),
+      },
+      {
+        test: /\.less$/,
+        exclude: /node_modules/,
+        use: getCssLoaders(
+          {
+            sourceMap: isDev,
+            module: true,
+            localIdent: '[local]__[hash:base64:5]',
+          },
+          'less-loader'
+        ),
       },
     ],
   },
-  {
-    test: /\.css$/,
-    exclude: /node_modules/,
-    use: getCssLoaders({
-      sourceMap: isDev,
-    }),
-  },
-  {
-    test: /\.less$/,
-    exclude: /node_modules/,
-    use: getCssLoaders(
-      {
-        sourceMap: isDev,
-        module: true,
-        localIdent: '[local]__[hash:base64:5]',
-      },
-      'less-loader'
-    ),
-  },
-];
-
-module.exports = {
-  /**
-   * This is the main entry point for your application, it's the first file
-   * that runs in the main process.
-   */
-  mode: process.env.NODE_ENV,
-  devtool: isDev ? 'source-map' : void 0,
-  entry: './src/renderer/index.ts',
-  // Put your normal webpack config below here
-  module: {
-    rules: rules,
-  },
   resolve: {
     alias: {
-      '@': resolve('src'),
+      '@': path.resolve('src'),
     },
     extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
   },
   plugins: [
-    new WebpackHtmlPlugin({
+    new HtmlWebpackPlugin({
       filename: 'index.html',
-      template: '../public/index.html',
+      template: path.resolve(__dirname, '../public/index.html'),
     }),
   ],
 };

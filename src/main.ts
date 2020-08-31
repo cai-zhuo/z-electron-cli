@@ -9,7 +9,7 @@ const createWindow = () => {
     },
   });
 
-  // mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
+  mainWindow.loadFile('./index.html');
 
   // Open the DevTools.
   if (!app.isPackaged) {
