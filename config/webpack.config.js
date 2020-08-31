@@ -20,51 +20,49 @@ const getCssLoaders = (cssOptions, preProcessors) => {
   return loaders;
 };
 
-const rules = [
-  {
-    test: /\.tsx?$/,
-    exclude: /(node_modules|\.webpack)/,
-    use: [
-      {
-        loader: 'awesome-typescript-loader',
-        options: {
-          transpileOnly: true,
-        },
-      },
-    ],
-  },
-  {
-    test: /\.css$/,
-    exclude: /node_modules/,
-    use: getCssLoaders({
-      sourceMap: isDev,
-    }),
-  },
-  {
-    test: /\.less$/,
-    exclude: /node_modules/,
-    use: getCssLoaders(
-      {
-        sourceMap: isDev,
-        module: true,
-        localIdent: '[local]__[hash:base64:5]',
-      },
-      'less-loader'
-    ),
-  },
-];
-
 module.exports = {
-  /**
-   * This is the main entry point for your application, it's the first file
-   * that runs in the main process.
-   */
-  mode: process.env.NODE_ENV,
+  mode: 'development',
   devtool: isDev ? 'source-map' : void 0,
   entry: './src/renderer/index.ts',
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    filename: 'renderer.js',
+  },
   // Put your normal webpack config below here
   module: {
-    rules: rules,
+    rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: /(node_modules|\.webpack)/,
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+            options: {
+              transpileOnly: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: getCssLoaders({
+          sourceMap: isDev,
+        }),
+      },
+      {
+        test: /\.less$/,
+        exclude: /node_modules/,
+        use: getCssLoaders(
+          {
+            sourceMap: isDev,
+            module: true,
+            localIdent: '[local]__[hash:base64:5]',
+          },
+          'less-loader'
+        ),
+      },
+    ],
   },
   resolve: {
     alias: {
