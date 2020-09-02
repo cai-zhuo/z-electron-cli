@@ -1,6 +1,6 @@
-import Home from './pages/Home';
 import { createElement } from 'react';
 import { render } from 'react-dom';
+import Home from './Home';
 
 
 render(

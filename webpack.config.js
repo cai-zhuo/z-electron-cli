@@ -22,7 +22,7 @@ const getCssLoaders = (cssOptions, preProcessors) => {
 
 module.exports = {
   mode: 'development',
-  devtool: isDev ? 'source-map' : void 0,
+  devtool: isDev ? 'source-map' : undefined,
   entry: './src/renderer/index.ts',
   output: {
     path: path.resolve(__dirname, '../dist'),
@@ -47,19 +47,19 @@ module.exports = {
         test: /\.css$/,
         exclude: /node_modules/,
         use: getCssLoaders({
-          sourceMap: isDev,
-        }),
+                             sourceMap: isDev,
+                           }),
       },
       {
         test: /\.less$/,
         exclude: /node_modules/,
         use: getCssLoaders(
-          {
-            sourceMap: isDev,
-            module: true,
-            localIdent: '[local]__[hash:base64:5]',
-          },
-          'less-loader'
+            {
+              sourceMap: isDev,
+              module: true,
+              localIdent: '[local]__[hash:base64:5]',
+            },
+            'less-loader',
         ),
       },
     ],
@@ -68,11 +68,13 @@ module.exports = {
     alias: {
       '@': path.resolve('src'),
     },
-    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', '.json'],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.css', 'less', '.json'],
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html'),
-    }),
+    new HtmlWebpackPlugin(
+        {
+          template: './public/index.html',
+        },
+    ),
   ],
 };
