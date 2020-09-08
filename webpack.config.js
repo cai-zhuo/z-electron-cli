@@ -25,7 +25,7 @@ module.exports = {
   devtool: isDev ? 'source-map' : undefined,
   entry: './src/renderer/index.ts',
   output: {
-    path: path.resolve(__dirname, '../dist'),
+    path: path.resolve(__dirname, './dist'),
     filename: 'renderer.js',
   },
   // Put your normal webpack config below here
