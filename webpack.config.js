@@ -21,6 +21,7 @@ const getCssLoaders = (cssOptions, preProcessors) => {
 };
 
 module.exports = {
+  target:'electron-renderer',
   mode: 'development',
   devtool: isDev ? 'source-map' : undefined,
   entry: './src/renderer/index.ts',
