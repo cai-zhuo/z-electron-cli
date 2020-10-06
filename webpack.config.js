@@ -57,8 +57,10 @@ module.exports = {
         use: getCssLoaders(
             {
               sourceMap: isDev,
-              module: true,
-              localIdent: '[local]__[hash:base64:5]',
+              module: {
+                localIdent: '[local]__[hash:base64:5]',
+                exportLocalsConvention: 'camelCase',
+              },
             },
             'less-loader',
         ),
